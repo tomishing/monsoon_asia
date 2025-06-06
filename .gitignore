@@ -3,5 +3,6 @@
 
 # But not these files/directories:
 !.gitignore
+!.nojekyll
 !docs/
 !docs/**/*

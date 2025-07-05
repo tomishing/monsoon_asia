@@ -286,7 +286,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Southeast Asia is one of the regions where a wide range of agricultural practices has been carried out. Despite the overwhelming influence of the market economy, the tireless efforts of smallholder farmers over more than 1,000 years have created remarkably diverse array of farming systems. For example, in rice farming, which has long been the foundation of food security, farmers have developed numerous rice varieties, adaptive techniques to cope with erratic rainfall, fluctuations in crop prices, and, at times, strategies to escape the control of dominant political powers <span class="citation" data-cites="scott2010">(<a href="#ref-scott2010" role="doc-biblioref">Scott 2010</a>)</span>. These farming techniques are well adapted to their local ecosystems and socioeconomic conditions.</p>
 <p>While these agricultural practices have evolved in response to micro-landscape, much like the Darwinian evolution of living organisms, agricultural scientists have sought to construct overarching frameworks to explain farmers’ behaviors. Needless to say, socioeconomic factors such as food productions, crop market price, demographic dynamics <span class="citation" data-cites="boserup1965">(<a href="#ref-boserup1965" role="doc-biblioref">Boserup 1965</a>)</span> strongly influence these behaviors, but natural conditions also play a significant role in shaping farming practices over the long run.</p>
-<p>Abundant natural resources and highly variable natural conditions are often considered as the two main factors shaping agriculture in this region. However, these two are frequently at odds. Interestingly,there is a clear divide among researchers: some emphasize environmental instability, while others highlight resource abundance. Researchers focusing on mainland Southeast Asia, such as Thailand, Laos, Myanmar, Vietnam, and Cambodia, tend to stress how farmers adapt to unstable and unpredictable natural conditions, especially precipitation <span class="citation" data-cites="fukui1993 kono2012">(<a href="#ref-fukui1993" role="doc-biblioref">Fukui and Fukui 1993</a>, <a href="#ref-kono2012" role="doc-biblioref">Kono et al. 2012</a>)</span>. On the other hand, scholars studying maritime Southeast Asia often emphasize the area’s rich biomass and high primary productivity <span class="citation" data-cites="tanaka2010a">(<a href="#ref-tanaka2010a" role="doc-biblioref">Tanaka 2010</a>)</span>.</p>
+<p>Abundant natural resources and highly variable natural conditions are often considered as the two main factors shaping agriculture in this region. However, these two are frequently at odds. Interestingly, there is a clear divide among researchers: some emphasize environmental instability, while others highlight resource abundance. Researchers focusing on mainland Southeast Asia, such as Thailand, Laos, Myanmar, Vietnam, and Cambodia, tend to stress how farmers adapt to unstable and unpredictable natural conditions, especially precipitation <span class="citation" data-cites="fukui1993 kono2012">(<a href="#ref-fukui1993" role="doc-biblioref">Fukui and Fukui 1993</a>, <a href="#ref-kono2012" role="doc-biblioref">Kono et al. 2012</a>)</span>. On the other hand, scholars studying maritime Southeast Asia often emphasize the area’s rich biomass and high primary productivity <span class="citation" data-cites="tanaka2010a">(<a href="#ref-tanaka2010a" role="doc-biblioref">Tanaka 2010</a>)</span>.</p>
 <p>In this short essay, I aim to examine whether the instability or the abundance of natural resources has been the primary factor shaping agricultural systems in the long run, or whether both factors have played complementary roles. I also outline the methodological steps taken to approach this research questions.</p>
 <section id="east-asian-monsoon-area" class="level3">
 <h3 class="anchored" data-anchor-id="east-asian-monsoon-area">East Asian Monsoon Area</h3>
@@ -695,7 +695,7 @@ e &amp;= 0.000664 \\
 \end{align}
 \]</span></p>
 <p>This model estimates NPP as the minimum of two functions: one driven by temperature and the other by precipitation.</p>
-<p>First of all, we compute mean annual temperature.</p>
+<p>First of all, we create datasets of max and minimum annual temperatures from 1958 to 2024.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1958</span>, <span class="dv">2024</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ras_dir <span class="ot">&lt;-</span> <span class="st">"data/raster/"</span></span>
@@ -737,12 +737,9 @@ e &amp;= 0.000664 \\
 <span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tmax"</span>, <span class="st">"tmin"</span>)</span>
 <span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (var <span class="cf">in</span> vars) {</span>
 <span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    fname <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"a_"</span>, var)</span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(fname, <span class="at">filename =</span> <span class="fu">file.path</span>(</span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>        ras_dir,</span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(fname, <span class="st">".tif"</span>)</span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>    ), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>(<span class="at">pattern =</span> <span class="st">"^mon_"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(fname, <span class="at">filename =</span> <span class="fu">file.path</span>( ras_dir, <span class="fu">paste0</span>(fname, <span class="st">".tif"</span>)), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>(<span class="at">pattern =</span> <span class="st">"^mon_"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we can compute mean annual temperature.</p>
 <div class="cell">
@@ -754,11 +751,9 @@ e &amp;= 0.000664 \\
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate mean max temperature and min temperature for each layer</span></span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>a_tmean <span class="ot">=</span> (a_tmin <span class="sc">+</span> a_tmax) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>a_tmean <span class="ot">&lt;-</span> (a_tmin <span class="sc">+</span> a_tmax) <span class="sc">/</span> <span class="dv">2</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(a_tmean, <span class="at">filename =</span> <span class="fu">file.path</span>(</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    ras_dir, <span class="st">"a_tmean.tif"</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(a_tmean, <span class="at">filename =</span> <span class="fu">file.path</span>( ras_dir, <span class="st">"a_tmean.tif"</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we can estimate NPP using the Miami model.</p>
 <div class="cell">
@@ -791,8 +786,9 @@ e &amp;= 0.000664 \\
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>npp_legend <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>, <span class="fu">seq</span>(<span class="dv">500</span>, <span class="dv">2500</span>, <span class="at">by =</span> <span class="dv">500</span>), max_val)</span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"view"</span>)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(rmap) <span class="sc">+</span> <span class="fu">tm_raster</span>(<span class="at">col.scale =</span> <span class="fu">tm_scale</span>(<span class="at">col =</span> npp_legend, <span class="at">values =</span> <span class="st">"brewer.bu_gn"</span>))</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(rmap) <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_raster</span>(<span class="at">col.scale =</span> <span class="fu">tm_scale</span>(<span class="at">col =</span> npp_legend, <span class="at">values =</span> <span class="st">"brewer.bu_gn"</span>))</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <style>#legend01 { background: #FFFFFF; opacity: 1}</style>
 <div class="leaflet html-widget html-fill-item" id="htmlwidget-c2b542690071b1cb0d60" style="width:100%;height:464px;"></div>
@@ -922,7 +918,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/tomishing\.quarto\.pub\/climate--data-projects");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

@@ -6,3 +6,5 @@
 !.nojekyll
 !docs/
 !docs/**/*
+
+/.quarto/
